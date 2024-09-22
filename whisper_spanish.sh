@@ -14,6 +14,6 @@ curl -X POST "http://localhost:8000/v1/chat/completions" \
 	--data '{
 		"model": "clu-ling/whisper-small-spanish"
 		"messages": [
-			{"role": "user", "content": "¿Cómo va la vida, compa? Que tal tu día? tu vaya bien, mano?"}
+			{"role": "user", "content": "Hola Chamo, soy Don Berto de la Isla de Pascua, Cómo va la vida, mi compa? Que tal tu día? tu vaya bien, mano?"}
 		]
 	}'
