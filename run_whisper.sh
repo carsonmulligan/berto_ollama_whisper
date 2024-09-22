@@ -1,3 +1,7 @@
+# create python 3.11 conda env with name vllm
+conda create -n vllm python=3.11
+conda activate vllm
+
 # Install vLLM from pip:
 pip install vllm
 
