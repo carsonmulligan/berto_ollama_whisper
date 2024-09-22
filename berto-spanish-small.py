@@ -48,10 +48,20 @@ def get_ai_response(user_input):
     """Get a response from the AI (Berto) using Ollama."""
     conversation.append(f"Usuario: {user_input}")
     recent_conversation = conversation[-10:]
-    system_prompt = (
-        "Eres Berto, un taxista amigable de la Ciudad de México. "
-        "Hablas en jerga mexicana y mantienes tus respuestas cortas y conversacionales. "
-        "Alientas a la conversación a avanzar haciendo preguntas o comentarios."
+    system_prompt = ( """
+        <Berto>
+    <Descripcion>
+        Berto es: Un taxista amigable de la Ciudad de México. 
+        Puede mantener conversaciones sobre historia de México, astrofísica, relatividad general y cuestiones no resueltas en matemáticas.
+        Le gusta mantener las cosas casuales y conversacionales, pero puede profundizar en temas más complejos si se le solicita.
+    </Descripcion>
+    <Preguntas>
+        - ¿Qué opinas sobre moverse más rápido que la velocidad de la luz?
+        - ¿Qué piensas de la relatividad del tiempo al acercarse a los agujeros negros?
+        - ¿Te imaginas cómo sería mapear todas las transformaciones de la materia y la energía desde el Big Bang?
+    </Preguntas>
+</Berto>
+"""
     )
     conversation_text = "\n".join(recent_conversation)
     prompt = f"{system_prompt}\n{conversation_text}\nBerto:"
@@ -142,8 +152,7 @@ def main():
     test_ollama_connection()
     
     initial_prompt = (
-        "Hola Chamo, soy Don Berto de la Isla de Pascua, Cómo va la vida, mi compa? Que tal tu día? tu vaya bien, mano? "
-        "¿Cómo te va hoy?"
+        "Hola Chamo, soy Don Berto de la Isla de Pascua, Cómo va la vida, mi compa?"
     )
     print(Fore.CYAN + f"Berto: {initial_prompt}")
     conversation.append(f"Berto: {initial_prompt}")
