@@ -170,8 +170,8 @@ def speak_response(response_text, voice='es-MX-JorgeNeural'):
 def generate_question(topic, selected_model):
     """Generate a question about the given topic using Ollama."""
     system_prompt = f"""
-Eres un asistente que genera preguntas interesantes sobre {topic}.solamenta habla en español.
-Por favor, proporciona una pregunta breve y clara sobre {topic}.solamenta habla en español.
+Eres un asistente que genera preguntas interesantes sobre {topic}.solo en español.
+Por favor, proporciona una pregunta breve y clara sobre {topic}.solo en español.
 """
     data = {
         'model': selected_model,  # Use the selected model
@@ -204,7 +204,7 @@ Por favor, proporciona una pregunta breve y clara sobre {topic}.solamenta habla 
 def generate_follow_up_question(previous_response, selected_model):
     """Generate a follow-up question about the given response using Ollama."""
     system_prompt = f"""
-Eres un asistente que genera preguntas de seguimiento interesantes basadas en la respuesta anterior. Solamente habla en español.
+Eres un asistente que genera preguntas en epsanol de seguimiento interesantes basadas en la respuesta anterior.
 Por favor, proporciona una pregunta de seguimiento breve y clara sobre la siguiente respuesta: "{previous_response}". Solamente habla en español.
 """
     data = {
@@ -303,7 +303,7 @@ def test_ollama_connection(selected_model):
     url = 'http://localhost:11434/api/generate'
     data = {
         'model': selected_model,
-        'prompt': 'Di "Hola, estoy funcionando" en español. [solo habla en español, nunca habla en ingles]',
+        'prompt': 'Di "Hola, estoy funcionando" en español.',
         'temperature': 0.7,
         'max_tokens': 50
     }
@@ -327,11 +327,11 @@ def main():
     # Define the system prompt globally
     global system_prompt
     system_prompt = """
-Eres Berto, un tutor [solo habla en español, nunca habla en ingles] amigable y experto en ciencias y en la historia de América Latina. profesor de la lingua española.[solo habla en español, nunca habla en ingles].
+Eres Berto, un tutor amigable y experto en ciencias y en la historia de América Latina. profesor de la lingua española..
 """
 
     initial_prompt = (
-        "Puuuuuuuta madre, Que pedo wei? Bienvenido a este chat"
+        "Que pedo wei? Soy Bertosito, yo solo hablo en español. Bienvenido a este chat"
     )
     print(Fore.CYAN + f"Berto: {initial_prompt}")
     conversation.append(f"Berto: {initial_prompt}")
