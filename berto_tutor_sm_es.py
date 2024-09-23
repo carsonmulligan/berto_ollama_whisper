@@ -7,7 +7,7 @@ import edge_tts
 import simpleaudio as sa
 import os
 import json
-from colorama import init, Fore, Style
+from colorama import init, Fore
 from pydub import AudioSegment
 
 # Initialize colorama for colored text in terminal
@@ -17,16 +17,33 @@ init(autoreset=True)
 print(Fore.CYAN + "Cargando el modelo Whisper...")
 model_path = '/Users/carsonmulligan/Desktop/guest_house/code/mlx-examples/whisper/mlx_models/whisper-small-spanish'
 
-# Historial de conversación
+# Conversation history
 conversation = []
 
-def record_audio(fs=16000, duration=5):
-    """Record audio from the microphone."""
+def record_audio(fs=16000):
+    """Record audio from the microphone until silence is detected."""
     print(Fore.GREEN + "Berto está escuchando... (Presiona Ctrl+C para detener)")
     try:
-        recording = sd.rec(int(duration * fs), samplerate=fs, channels=1, dtype='float32')
-        sd.wait()
-        return np.squeeze(recording)
+        duration = 0.5  # Chunk duration in seconds
+        silence_threshold = 0.01  # Silence threshold
+        max_silence_duration = 1.5  # Max duration of silence before stopping
+
+        recording = []
+        silence_duration = 0
+
+        while True:
+            audio_chunk = sd.rec(int(duration * fs), samplerate=fs, channels=1, dtype='float32')
+            sd.wait()
+            rms = np.sqrt(np.mean(audio_chunk**2))
+            recording.append(audio_chunk)
+            if rms < silence_threshold:
+                silence_duration += duration
+            else:
+                silence_duration = 0
+            if silence_duration > max_silence_duration:
+                break
+        full_recording = np.concatenate(recording, axis=0)
+        return np.squeeze(full_recording)
     except Exception as e:
         print(Fore.RED + f"Error al grabar audio: {e}")
         return None
@@ -45,24 +62,26 @@ def transcribe_audio(audio_data):
         return ""
 
 def get_ai_response(user_input):
-    """Get a response from the AI (Berto) using Ollama."""
+    """Get a response from Berto using Ollama."""
     conversation.append(f"Usuario: {user_input}")
     recent_conversation = conversation[-10:]
-    system_prompt = ( """
-        <Berto>
-    <Descripcion>
-        Berto es: Un taxista amigable de la Ciudad de México. 
-        Puede mantener conversaciones sobre historia de México, astrofísica, relatividad general y cuestiones no resueltas en matemáticas.
-        Le gusta mantener las cosas casuales y conversacionales, pero puede profundizar en temas más complejos si se le solicita.
-    </Descripcion>
-    <Preguntas>
-        - ¿Qué opinas sobre moverse más rápido que la velocidad de la luz?
-        - ¿Qué piensas de la relatividad del tiempo al acercarse a los agujeros negros?
-        - ¿Te imaginas cómo sería mapear todas las transformaciones de la materia y la energía desde el Big Bang?
-    </Preguntas>
+
+    # Check for 'berto stop' command
+    if 'berto stop' in user_input.lower():
+        print(Fore.CYAN + "Berto ha dejado de hablar y está escuchando...")
+        conversation.clear()
+        return ""
+
+    system_prompt = """
+<Berto>
+<Descripcion>
+Berto es un tutor amigable que ayuda a los usuarios a mejorar sus habilidades para hacer preguntas en español.
+Corrige amablemente las preguntas si es necesario y ofrece sugerencias para mejorarlas.
+Luego, responde de manera informativa y clara.
+</Descripcion>
 </Berto>
 """
-    )
+
     conversation_text = "\n".join(recent_conversation)
     prompt = f"{system_prompt}\n{conversation_text}\nBerto:"
 
@@ -71,7 +90,7 @@ def get_ai_response(user_input):
         'model': 'llama3.1',
         'prompt': prompt,
         'temperature': 0.7,
-        'max_tokens': 150,
+        'max_tokens': 200,
         'stop': ['Usuario:', 'Berto:']
     }
     headers = {'Content-Type': 'application/json'}
@@ -91,30 +110,30 @@ def get_ai_response(user_input):
         return response_text
     except requests.exceptions.RequestException as e:
         print(Fore.RED + f"Error al comunicarse con Ollama: {e}")
-        return "Lo siento, tengo problemas para responder en este momento. El Ollama."
+        return "Lo siento, tengo problemas para responder en este momento."
     except json.JSONDecodeError as e:
         print(Fore.RED + f"Error al analizar la respuesta JSON: {e}")
-        return "Lo siento, tengo problemas para responder en este momento. El JSON."
+        return "Lo siento, tengo problemas para responder en este momento."
 
 async def save_audio(response_text):
-    """Convert AI response to speech using Edge TTS."""
+    """Convert Berto's response to speech using Edge TTS."""
     voice = "es-MX-JorgeNeural"
     communicate = edge_tts.Communicate(text=response_text, voice=voice)
     await communicate.save("berto_response.mp3")
     print(Fore.GREEN + "Audio guardado exitosamente")
 
 def speak_response(response_text):
-    """Play the AI's spoken response."""
+    """Play Berto's spoken response."""
+    if not response_text:
+        return
     try:
         asyncio.run(save_audio(response_text))
-        
+
         if os.path.exists("berto_response.mp3") and os.path.getsize("berto_response.mp3") > 0:
-            print(Fore.GREEN + "El archivo MP3 existe y tiene contenido")
             sound = AudioSegment.from_mp3("berto_response.mp3")
             sound.export("berto_response.wav", format="wav")
-            
+
             if os.path.exists("berto_response.wav") and os.path.getsize("berto_response.wav") > 0:
-                print(Fore.GREEN + "El archivo WAV existe y tiene contenido")
                 wave_obj = sa.WaveObject.from_wave_file("berto_response.wav")
                 play_obj = wave_obj.play()
                 play_obj.wait_done()
@@ -140,19 +159,19 @@ def test_ollama_connection():
         response = requests.post(url, json=data, headers=headers)
         response.raise_for_status()
         result = response.text
-        print(Fore.GREEN + f"Prueba de Ollama exitosa. Respuesta: {result}")
+        print(Fore.GREEN + "Prueba de Ollama exitosa.")
     except requests.exceptions.RequestException as e:
         print(Fore.RED + f"Error conectando a Ollama: {e}")
 
 def main():
     """Main loop for the CLI interaction."""
     print(Fore.CYAN + "¡Iniciando conversación con Berto!")
-    
+
     # Test Ollama connection
     test_ollama_connection()
-    
+
     initial_prompt = (
-        "Hola Chamo, soy Don Berto de la Isla de Pascua, Cómo va la vida, mi compa?"
+        "Hola, soy Berto. Estoy aquí para ayudarte a mejorar tus preguntas en español. ¿En qué te puedo ayudar hoy?"
     )
     print(Fore.CYAN + f"Berto: {initial_prompt}")
     conversation.append(f"Berto: {initial_prompt}")
@@ -161,7 +180,7 @@ def main():
     while True:
         try:
             audio_data = record_audio()
-            if audio_data is None:
+            if audio_data is None or len(audio_data) == 0:
                 continue
             user_text = transcribe_audio(audio_data)
             if user_text == "":
