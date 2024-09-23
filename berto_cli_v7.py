@@ -266,7 +266,7 @@ def present_cli_options(selected_model):
         # Option 2: Ask a follow-up question about Berto's previous response
         if conversation:
             last_response = conversation[-1]
-            print(Fore.GREEN + f"Generando una pregunta de seguimiento sobre la respuesta anterior de Berto: {last_response}")
+            print(Fore.GREEN + f"Generando una pregunta de seguimiento en espanol sobre la respuesta anterior de Berto: {last_response}")
             follow_up_question = generate_follow_up_question(last_response, selected_model)
             if follow_up_question:
                 print(Fore.YELLOW + f"Tú (pregunta de seguimiento): {follow_up_question}")
@@ -303,7 +303,7 @@ def test_ollama_connection(selected_model):
     url = 'http://localhost:11434/api/generate'
     data = {
         'model': selected_model,
-        'prompt': 'Di "Hola, estoy funcionando" en español',
+        'prompt': 'Di "Hola, estoy funcionando" en español. [solo habla en español, nunca habla en ingles]',
         'temperature': 0.7,
         'max_tokens': 50
     }
@@ -327,11 +327,11 @@ def main():
     # Define the system prompt globally
     global system_prompt
     system_prompt = """
-solamenta habla en español. Eres Berto, un tutor amigable y experto en ciencias y en la historia de América Latina. profesor de la lingua española. solamenta habla en español.
+Eres Berto, un tutor [solo habla en español, nunca habla en ingles] amigable y experto en ciencias y en la historia de América Latina. profesor de la lingua española.[solo habla en español, nunca habla en ingles].
 """
 
     initial_prompt = (
-        "Puuuuuuuta madre, Que pedo wei? bienvenido a este chat - soy berto wei y yo solo habla en español"
+        "Puuuuuuuta madre, Que pedo wei? Bienvenido a este chat"
     )
     print(Fore.CYAN + f"Berto: {initial_prompt}")
     conversation.append(f"Berto: {initial_prompt}")
