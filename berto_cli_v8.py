@@ -81,7 +81,7 @@ def get_ai_response(user_input, selected_model):
     conversation.append(f"Usuario: {user_input}")
 
     # Limit the conversation history
-    recent_conversation = conversation[-4:]
+    recent_conversation = conversation[-2:]
 
     # Exclude previous refusals
     filtered_conversation = [
@@ -102,7 +102,7 @@ def get_ai_response(user_input, selected_model):
         'model': selected_model,  # Use the selected model
         'prompt': prompt,
         'temperature': 0.5,
-        'max_tokens': 77,
+        'max_tokens': 50,
         'stop': ['Usuario:']
     }
     headers = {'Content-Type': 'application/json'}
@@ -305,7 +305,7 @@ def test_ollama_connection(selected_model):
         'model': selected_model,
         'prompt': 'Di "Hola, estoy funcionando" en español.',
         'temperature': 0.7,
-        'max_tokens': 50
+        'max_tokens': 25
     }
     headers = {'Content-Type': 'application/json'}
 
@@ -326,12 +326,15 @@ def main():
 
     # Define the system prompt globally
     global system_prompt
+#     system_prompt = """
+# Eres Berto, un tutor amigable y experto en ciencias y en la historia de América Latina. profesor de la lingua española..
+# """
     system_prompt = """
-Eres Berto, un tutor amigable y experto en ciencias y en la historia de América Latina. profesor de la lingua española..
-"""
+    Eres Berto, un tutor amigable y experto en ciencias y en la historia de América Latina. Por favor, proporciona respuestas breves y claras.
+    """
 
     initial_prompt = (
-        "Que pedo wei? Soy Bertosito, yo solo hablo en español. Bienvenido a este chat"
+        "Que tal wei? Soy Bertosito, yo solo hablo en español, bienvenido!"
     )
     print(Fore.CYAN + f"Berto: {initial_prompt}")
     conversation.append(f"Berto: {initial_prompt}")
