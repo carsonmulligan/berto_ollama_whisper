@@ -23,12 +23,16 @@ engine = pyttsx3.init()
 
 # Set voice properties
 voices = engine.getProperty('voices')
+# for voice in voices:
+#     # Fix: Remove .decode('utf-8') as it's unnecessary in Python 3
+#     if 'es-MX.Grandpa' in voice.languages[0].lower():
+#         engine.setProperty('voice', voice.id)
+#         break
 for voice in voices:
-    # Fix: Remove .decode('utf-8') as it's unnecessary in Python 3
-    if 'spanish' in voice.languages[0].lower():
+    if voice.id == "com.apple.eloquence.es-MX.Grandpa":
         engine.setProperty('voice', voice.id)
         break
-
+    
 # Load the Whisper model
 print(Fore.CYAN + "Cargando el modelo Whisper...")
 model = whisper.load_model('medium')  # Use 'large' for even better accuracy

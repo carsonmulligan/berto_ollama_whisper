@@ -13,7 +13,7 @@ voices = engine.getProperty('voices')
 
 # Set the voice to Grandpa
 for voice in voices:
-    if voice.id == "com.apple.eloquence.es-MX.Shelley":
+    if voice.id == "com.apple.eloquence.es-MX.Grandpa":
         engine.setProperty('voice', voice.id)
         break
 
