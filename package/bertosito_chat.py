@@ -106,7 +106,7 @@ def get_ai_response(user_input, selected_model):
         'model': selected_model,  # Use the selected model
         'prompt': prompt,
         'temperature': 0.5,
-        'max_tokens': 200,
+        'max_tokens': 150,
         'stop': ['Usuario:']
     }
     headers = {'Content-Type': 'application/json'}
