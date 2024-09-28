@@ -1,68 +1,73 @@
-# Fully Local Taxi-Driver Language Assistant
+# 🚖 fully local taxi-driver language assistant
 
-## Overview
+## 📝 overview
 
-This project provides a fully local language assistant called Berto. Berto can listen to your audio, transcribe it using Whisper, and then interact with you in Spanish using an AI model served locally via Ollama. It also has text-to-speech capabilities to provide audio responses.
+this project provides a fully local language assistant called berto. berto can listen to your audio, transcribe it using whisper, and then interact with you in spanish using an ai model served locally via ollama. it also has text-to-speech capabilities to provide audio responses. 🗣️
 
-## Features
+## 🌟 features
 
-- Local transcription of spoken language using Whisper.
-- Interaction with an AI model (Llama 2 uncensored) served locally via Ollama.
-- Conversation options, including following up on questions related to science, history, and politics.
-- Text-to-speech responses using Edge TTS.
-- Audio playback of Berto's responses.
+- local transcription of spoken language using whisper. 🎤
+- interaction with an ai model (llama 2 uncensored) served locally via ollama. 🦙
+- conversation options, including following up on questions related to science, history, and politics. ❓
+- text-to-speech responses using edge tts. 🔊
+- audio playback of berto's responses. 🎧
 
-## Setup
+## 🎥 demo
 
-### 1. Install Dependencies
+[watch the demo video here](./demo.mp4)
 
-First, you need to install the required packages. You can do this by running the following command to install all dependencies from the `requirements.txt` file:
+## 🚀 setup
+
+### 1. install dependencies 📦
+
+first, you need to install the required packages. you can do this by running the following command to install all dependencies from the `requirements.txt` file:
 
 ```bash
 pip install -r requirements.txt
 ```
 
-### 2. Download and Install Ollama
+### 2. download and install ollama 🛠️
 
-This project requires Ollama to serve the AI model (`llama2-uncensored`). You can download Ollama from the [Ollama website](https://ollama.com/) and install it on your local machine.
+this project requires ollama to serve the ai model (`llama2-uncensored`). you can download ollama from the [Ollama website](https://ollama.com/) and install it on your local machine.
 
-Once installed, you need to download the model:
+once installed, you need to download the model:
 
 ```bash
 ollama run llama2-uncensored
 ```
 
-Make sure Ollama is running on `localhost:11434` to handle the requests.
+make sure ollama is running on `localhost:11434` to handle the requests.
 
-### 3. Run the Script
+### 3. run the script 🎬
 
-To run the assistant, execute the following script:
+to run the assistant, execute the following script:
 
 ```bash
 python bertosito_chat.py
 ```
 
-This will start a conversation with Berto, who will transcribe your spoken audio and respond based on the conversation using the AI model hosted on Ollama.
+this will start a conversation with berto, who will transcribe your spoken audio and respond based on the conversation using the ai model hosted on ollama.
 
-### How It Works
+### 💡 how it works
 
-- **Recording Audio:** Berto listens to your voice and transcribes it using Whisper.
-- **Generating Responses:** It sends your transcribed text to the AI model and generates a response.
-- **Text-to-Speech:** Berto will convert the generated response to speech and play it back.
-- **Conversation Options:** The assistant presents multiple conversation options, including asking questions and following up on prior responses.
+- **recording audio:** berto listens to your voice and transcribes it using whisper. 🎤
+- **generating responses:** it sends your transcribed text to the ai model and generates a response. 💬
+- **text-to-speech:** berto will convert the generated response to speech and play it back. 🔊
+- **conversation options:** the assistant presents multiple conversation options, including asking questions and following up on prior responses. 🤔
 
-## File Structure
+## 📂 file structure
 
-- `bertosito_chat.py`: The main script to run Berto.
-- `response.mp3` and `response.wav`: Audio files generated during interaction.
-- `requirements.txt`: File containing all the necessary dependencies.
+- `bertosito_chat.py`: the main script to run berto. 🖥️
+- `response.mp3` and `response.wav`: audio files generated during interaction. 🎶
+- `requirements.txt`: file containing all the necessary dependencies. 📜
+- `demo.mp4`: demo video showcasing the app. 🎥
 
-### Notes:
+### 📝 notes
 
-- Ensure that you have Ollama running locally and the required models downloaded before starting the script.
-- The assistant only responds in Spanish and expects interactions in the same language.
-- Make sure to run Ollama using the exact model name `llama2-uncensored`.
+- ensure that you have ollama running locally and the required models downloaded before starting the script. 🛠️
+- the assistant only responds in spanish and expects interactions in the same language. 🇪🇸
+- make sure to run ollama using the exact model name `llama2-uncensored`. 🦙
 
 ---
 
-Enjoy interacting with Berto!
+enjoy interacting with berto! 🎉
