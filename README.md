@@ -14,7 +14,9 @@ this project provides a fully local language assistant called berto. berto can l
 
 ## 🎥 demo
 
-[watch the demo video here](./demo.mp4)
+![demo gif](./demo.gif)
+
+[watch the demo video here](./demo.MOV)
 
 ## 🚀 setup
 
