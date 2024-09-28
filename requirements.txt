@@ -1,0 +1,9 @@
+sounddevice
+whisper
+requests
+asyncio
+edge_tts
+simpleaudio
+colorama
+pydub
+scipy
