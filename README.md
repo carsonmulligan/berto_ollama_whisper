@@ -16,7 +16,7 @@ this project provides a fully local language assistant called berto. berto can l
 
 ![demo gif](./demo.gif)
 
-[watch the demo video here](./demo.mp4)
+[watch the demo video here](./demo.MOV)
 
 ## 🚀 setup
 
