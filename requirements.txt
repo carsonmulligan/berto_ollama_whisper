@@ -1,9 +1,9 @@
 sounddevice
-whisper
+openai-whisper
 requests
 asyncio
 edge_tts
-simpleaudio
+pyaudio
 colorama
 pydub
 scipy

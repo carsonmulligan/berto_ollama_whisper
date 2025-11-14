@@ -7,11 +7,11 @@ import whisper
 import requests
 import asyncio
 import edge_tts
-import simpleaudio as sa
 import os
 import json
 from colorama import init, Fore
 from pydub import AudioSegment
+from pydub.playback import play
 from scipy.io.wavfile import write
 import sys
 
@@ -159,9 +159,7 @@ def speak_response(response_text, voice='es-MX-JorgeNeural'):
             sound.export(filename_wav, format="wav")
 
             if os.path.exists(filename_wav) and os.path.getsize(filename_wav) > 0:
-                wave_obj = sa.WaveObject.from_wave_file(filename_wav)
-                play_obj = wave_obj.play()
-                play_obj.wait_done()
+                play(sound)
                 os.remove(filename_mp3)
                 os.remove(filename_wav)
             else:
